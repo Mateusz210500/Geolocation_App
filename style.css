@@ -2,11 +2,13 @@
   --color-brand--1: #ffb545;
   --color-brand--2: #00c46a;
 
-  --color-dark--1: #2d3439;
+  --color-dark--1: #272d31;
   --color-dark--2: #42484d;
   --color-light--1: #aaa;
   --color-light--2: #ececec;
   --color-light--3: rgb(214, 222, 224);
+
+  --color-popup-dark--1: #2d3439dc;
 }
 
 * {
@@ -76,7 +78,10 @@ a:visited {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 0.75rem 1.5rem;
+  animation: fadeIn 1.5s;
+  
 }
+
 .workout--running {
   border-left: 5px solid var(--color-brand--2);
 }
@@ -198,7 +203,7 @@ a:visited {
 
 /* Popup width is defined in JS using options */
 .leaflet-popup .leaflet-popup-content-wrapper {
-  background-color: var(--color-dark--1);
+  background-color: var(--color-popup-dark--1);
   color: var(--color-light--2);
   border-radius: 5px;
   padding-right: 0.6rem;
@@ -209,7 +214,7 @@ a:visited {
 }
 
 .leaflet-popup .leaflet-popup-tip {
-  background-color: var(--color-dark--1);
+  background-color: var(--color-popup-dark--1);
 }
 
 .running-popup .leaflet-popup-content-wrapper {
@@ -217,4 +222,10 @@ a:visited {
 }
 .cycling-popup .leaflet-popup-content-wrapper {
   border-left: 5px solid var(--color-brand--1);
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+    to { opacity: 1; }
 }

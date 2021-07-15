@@ -154,7 +154,8 @@ class App{
      _renderWorkout(workout){
         let html = `
         <li class="workout workout--${workout.type}" data-id="${workout.id}">
-        <h2 class="workout__title">${workout.type.charAt(0).toUpperCase() + workout.type.slice(1)} on ${workout.date.getDate() + ' ' + this.#months[workout.date.getMonth()]}</h2>
+        <h2 class="workout__title">${workout.type.charAt(0).toUpperCase() + workout.type.slice(1)} 
+        on ${workout.date.getDate() + ' ' + this.#months[workout.date.getMonth()]}</h2>
         <div class="workout__details">
           <span class="workout__icon">🏃‍♂️</span>
           <span class="workout__value">${workout.distance}</span>
@@ -186,7 +187,7 @@ class App{
           html += `
           <div class="workout__details">
           <span class="workout__icon">⚡️</span>
-          <span class="workout__value">${workout.pace}</span>
+          <span class="workout__value">${Math.round(workout.pace * 100) / 100}</span>
           <span class="workout__unit">min/km</span>
         </div>
         <div class="workout__details">

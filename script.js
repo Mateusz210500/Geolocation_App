@@ -20,6 +20,11 @@ class Workout{
         this.distance = distance;
         this.duration = duration;
     }
+
+    _setDescription(){
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate()}`
+    }
 }
 
 
@@ -30,6 +35,8 @@ class Running extends Workout{
         super(coords, distance, duration);
         this.cadence = cadence;
         this.calcPace();
+        this._setDescription();
+
     }
 
     calcPace(){
@@ -47,6 +54,8 @@ class Cycling extends Workout{
         super(coords, distance, duration);
         this.elevationGain = elevationGain;
         this.calcSpeed();
+        this._setDescription();
+
     }
 
     calcSpeed(){
@@ -57,7 +66,6 @@ class Cycling extends Workout{
 
 
 class App{
-    #months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     #map;
     #mapZoomLevel = 13;
     #mapEvent;
@@ -65,6 +73,7 @@ class App{
 
     constructor() {
         this._getPosition();
+        this._getLocalStorage();
         form.addEventListener('submit', this._newWorkout.bind(this));
         inputType.addEventListener('change', this._toggleElevationField);
         containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
@@ -90,6 +99,10 @@ class App{
                 }).addTo(this.#map);
         
                 this.#map.on('click', this._showForm.bind(this));
+
+                this.#workouts.forEach(work => {
+                    this._renderWorkoutMarker(work);
+                })
         
     }
 
@@ -134,6 +147,7 @@ class App{
 
         this._renderWorkoutMarker(workout);
         this._renderWorkout(workout);
+        this._setLocalStorage();
          
         
         inputDistance.value = inputDuration.value = inputElevation.value = inputCadence.value = '';
@@ -155,8 +169,7 @@ class App{
      _renderWorkout(workout){
         let html = `
         <li class="workout workout--${workout.type}" data-id="${workout.id}">
-        <h2 class="workout__title">${workout.type.charAt(0).toUpperCase() + workout.type.slice(1)} 
-        on ${workout.date.getDate() + ' ' + this.#months[workout.date.getMonth()]}</h2>
+        <h2 class="workout__title">${workout.description}</h2>
         <div class="workout__details">
           <span class="workout__icon">🏃‍♂️</span>
           <span class="workout__value">${workout.distance}</span>
@@ -215,6 +228,20 @@ class App{
             pan: {
                 duration: 1
             }
+        })
+     }
+
+     _setLocalStorage(){
+         localStorage.setItem('workouts', JSON.stringify(this.#workouts))
+     }
+
+     _getLocalStorage(){
+         const data = JSON.parse(localStorage.getItem('workouts'));
+         console.log(data);
+        if(!data) return;
+        this.#workouts = data;
+        this.#workouts.forEach(work => {
+            this._renderWorkout(work);
         })
      }
 
